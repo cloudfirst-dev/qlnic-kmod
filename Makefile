@@ -32,7 +32,6 @@ clean:
 	make -C /lib/modules/$(KVER)/build M=$(PWD) clean
 	rm -f spkut
 install:
-	sudo install -v -m 755 spkut /bin/
 	sudo install -v -m 755 -d /lib/modules/$(KVER)/
 	sudo install -v -m 644 qlcnic-kmod.ko        /lib/modules/$(KVER)/qlcnic-kmod.ko
 	sudo depmod -a
