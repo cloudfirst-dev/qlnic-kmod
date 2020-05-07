@@ -3,7 +3,17 @@
 # Makefile for Qlogic 1G/10G Ethernet Driver for CNA devices
 #
 
-obj-m += qlcnic-kmod.o
+obj-m := qlcnic.o
+
+qlcnic-y := qlcnic_hw.o qlcnic_main.o qlcnic_init.o \
+        qlcnic_ethtool.o qlcnic_ctx.o qlcnic_io.o \
+        qlcnic_sysfs.o qlcnic_minidump.o qlcnic_83xx_hw.o \
+        qlcnic_83xx_init.o qlcnic_83xx_vnic.o \
+        qlcnic_sriov_common.o
+
+qlcnic-$(CONFIG_QLCNIC_SRIOV) += qlcnic_sriov_pf.o
+
+qlcnic-$(CONFIG_QLCNIC_DCB) += qlcnic_dcb.o
 
 ifndef KVER
 KVER=$(shell uname -r)
@@ -18,7 +28,6 @@ buildprep:
 	sudo yum install -y gcc kernel-{core,devel,modules}-$(KVER) elfutils-libelf-devel
 all:
 	make -C /lib/modules/$(KVER)/build M=$(PWD) EXTRA_CFLAGS=-DKMODVER=\\\"$(KMODVER)\\\" modules
-	gcc -o spkut ./simple-procfs-kmod-userspace-tool.c
 clean:
 	make -C /lib/modules/$(KVER)/build M=$(PWD) clean
 	rm -f spkut
