@@ -11,10 +11,6 @@ qlcnic-y := qlcnic_hw.o qlcnic_main.o qlcnic_init.o \
         qlcnic_83xx_init.o qlcnic_83xx_vnic.o \
         qlcnic_sriov_common.o
 
-qlcnic-$(CONFIG_QLCNIC_SRIOV) += qlcnic_sriov_pf.o
-
-qlcnic-$(CONFIG_QLCNIC_DCB) += qlcnic_dcb.o
-
 ifndef KVER
 KVER=$(shell uname -r)
 endif
@@ -33,5 +29,5 @@ clean:
 	rm -f spkut
 install:
 	sudo install -v -m 755 -d /lib/modules/$(KVER)/
-	sudo install -v -m 644 qlcnic-kmod.ko        /lib/modules/$(KVER)/qlcnic-kmod.ko
+	sudo install -v -m 644 qlcnic.ko        /lib/modules/$(KVER)/qlcnic.ko
 	sudo depmod -a
